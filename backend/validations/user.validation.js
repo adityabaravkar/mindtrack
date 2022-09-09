@@ -14,4 +14,11 @@ module.exports = {
       userName: Joi.string().max(128).required(),
     },
   },
+  update: {
+    body: {
+      id: Joi.objectId().required(),
+      email: Joi.string().email().required(),
+      userName: Joi.string().max(128).required(),
+    },
+  },
 };
