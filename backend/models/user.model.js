@@ -50,6 +50,20 @@ userSchema.statics = {
 
     return err;
   },
+
+  async findAndValidate(payload) {
+    const { email, password } = payload;
+    if (!email) throw new Error("Email must be provided for login");
+
+    const user = await this.findOne({ email }).exec();
+    if (!user)
+      throw new Error(`No user associated with ${email}`, httpStatus.NOT_FOUND);
+
+    if (user.password !== password)
+      throw new Error(`Password mismatch`, httpStatus.UNAUTHORIZED);
+
+    return user;
+  },
 };
 
 module.exports = mongoose.model("User", userSchema);

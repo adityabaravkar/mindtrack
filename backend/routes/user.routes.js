@@ -5,5 +5,6 @@ const { signup } = require("../validations/user.validation");
 const userController = require("../controllers/user.controller");
 
 router.post("/signup", validator(signup), userController.signup);
+router.post("/login", userController.login);
 
 module.exports = router;
