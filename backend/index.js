@@ -1,11 +1,11 @@
 const express = require("express");
 const app = express();
-const connectDB = require("./config/db");
 var bodyParser = require("body-parser");
 const errorHandler = require("./errors/error-handler");
+const mongoose = require("./services/mongoose");
 
 //connect to database
-connectDB();
+mongoose.connect();
 
 app.use(
   bodyParser.urlencoded({

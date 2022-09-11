@@ -1,6 +1,7 @@
 const httpStatus = require("http-status");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
+const config = require("../config");
 
 exports.signup = async (req, res, next) => {
   try {
@@ -17,7 +18,7 @@ exports.login = async (req, res, next) => {
   try {
     const user = await User.findAndValidate(req.body);
     const payload = { sub: user.id };
-    const token = jwt.sign(payload, "cmpe295secret");
+    const token = jwt.sign(payload, config.secret);
     return res.json({
       message: "success",
       user: user.transform(),
