@@ -1,8 +1,10 @@
 const express = require("express");
 const app = express();
 var bodyParser = require("body-parser");
-const errorHandler = require("./errors/error-handler");
+const errorHandler = require("./middlewares/error-handler");
 const mongoose = require("./services/mongoose");
+const passport = require("passport");
+const passportJwt = require("./services/passport");
 
 //connect to database
 mongoose.connect();
@@ -29,6 +31,10 @@ app.use(function (req, res, next) {
   res.setHeader("Cache-Control", "no-cache");
   next();
 });
+
+// passport
+app.use(passport.initialize());
+passport.use("jwt", passportJwt.jwt);
 
 //Define all the routes
 app.use(require("./routes/user.routes"));
