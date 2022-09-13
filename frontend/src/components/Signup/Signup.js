@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import logo from "../../assets/images/login-body-logo.svg";
 import { Redirect } from "react-router";
 import { graphql } from "react-apollo";
 import { SignupMutation } from "../../mutation/mutation";
+import { Link } from "react-router-dom";
 import "../../App.css";
 
 class SignUp extends Component {
@@ -95,12 +95,20 @@ class SignUp extends Component {
       );
     }
     return (
-      <div class="d-flex container flex_container login-body">
+      <div
+        style={{
+          backgroundColor: "#6ABBD7",
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         {remove}
         {redirectVar}
-        <img width="200" height="200" class="login_logo" src={logo} alt="xyz" />
         <div class="login-sidebar">
-          <div class="sidebar-header">Introduce yourself</div>
+          <div class="sidebar-header mb-5">Welcome to MindTrack</div>
           <form
             class="form-stacked"
             id="new_user_session"
@@ -111,7 +119,7 @@ class SignUp extends Component {
                 for="user_session_email"
                 class="mb-1 label-style-signup-font"
               >
-                Hi there! My name is
+                Enter your <strong>Name</strong>
               </label>
               <div class="input">
                 <input
@@ -127,8 +135,8 @@ class SignUp extends Component {
             </div>
 
             <div class="secondary_fields">
-              <div class="mb-1 label-style-signup">
-                Here’s my <strong>email address</strong>:
+              <div class="mb-1 label-style-signup-font">
+                Enter your <strong>Email address</strong>
                 <br />
                 <input
                   tabindex="2"
@@ -141,8 +149,8 @@ class SignUp extends Component {
                 ></input>
               </div>
 
-              <div class="mb-1 label-style-signup">
-                And here’s my <strong>password</strong>:
+              <div class="mb-1 label-style-signup-font">
+                Create your <strong>Password</strong>
                 <br />
                 <input
                   tabindex="3"
@@ -155,14 +163,18 @@ class SignUp extends Component {
                 />
               </div>
             </div>
-
-            <input
-              type="submit"
-              name="commit"
-              value="Sign me up!"
-              class="btn btn-large btn-orange btn-signup mt-2"
-              data-disable-with="Sign me up!"
-            />
+            <div className="text-center">
+              <input
+                type="submit"
+                name="commit"
+                value="Sign me up!"
+                class="btn-dark btn-large btn-signup mt-5"
+                data-disable-with="Sign me up!"
+              />
+              <div className="mt-3">
+                Already a member? <Link to="/login">Log in</Link>
+              </div>
+            </div>
           </form>
         </div>
       </div>

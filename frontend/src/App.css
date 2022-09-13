@@ -638,10 +638,10 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
   display: inline-block;
-  height: 30px;
+  height: 50px;
   padding: 4px;
   margin-bottom: 9px;
-  font-size: 13px;
+  font-size: 25px;
   line-height: 18px;
   color: #555555;
 }
@@ -1618,19 +1618,13 @@ a.btn-orange:hover{
   margin-right: 25px;
 }
 
-.login-sidebar{
-  float: left;
-    max-width: 240px;
-    margin-left: 15px;
-    padding-bottom: 60px;
-}
-
 .sidebar-header{
   text-transform: uppercase;
-    font-size: 16px;
-    color: #999;
+    font-size: 25px;
+    color: #141B3E;
     font-weight: bold;
     line-height: 20px;
+    text-align: center;
 }
 
 .flex_container{
@@ -1642,15 +1636,8 @@ a.btn-orange:hover{
 }
 
 .login-body{
-  width: auto;
-    max-width: 510px;
     padding-top: 6%;
     min-height: 100%;
-}
-
-.form-stacked{
-  margin: 15px 0 0;
-    width: 260px;
 }
 
 .inputBox{
@@ -1678,7 +1665,6 @@ a.btn-orange:hover{
 input.btn-signup:hover{
   color: #fff;
   text-decoration: none;
-  background: #ff5216;
 }
 
 input[type="email"]{
