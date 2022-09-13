@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router";
-import { graphql } from "react-apollo";
-import { SignupMutation } from "../../mutation/mutation";
 import { Link } from "react-router-dom";
 import "../../App.css";
 
@@ -21,7 +19,6 @@ class Login extends Component {
     this.firstNameChangeHandler = this.firstNameChangeHandler.bind(this);
     this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
     this.emailChangeHandler = this.emailChangeHandler.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   firstNameChangeHandler = (e) => {
@@ -40,39 +37,6 @@ class Login extends Component {
     this.setState({
       password: e.target.value,
     });
-  };
-
-  handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("in here", this.state);
-    let mutationResponse = await this.props.SignupMutation({
-      variables: {
-        firstName: this.state.firstName,
-        email: this.state.email,
-        password: this.state.password,
-      },
-    });
-    let result = mutationResponse.data.userSignup;
-    console.log("result", result);
-    if (result) {
-      console.log("Response", result);
-      if (result.status === "200") {
-        localStorage.setItem("userId", result.userId);
-        localStorage.setItem("userName", result.userName);
-        localStorage.setItem("userEmail", result.userEmail);
-        localStorage.setItem("token", result.token);
-        this.setState({
-          response: result.message,
-          status: "Success",
-          red: <Redirect to="/home"></Redirect>,
-        });
-      } else {
-        this.setState({
-          status: "Error",
-          response: result.message,
-        });
-      }
-    }
   };
 
   render() {
@@ -162,4 +126,4 @@ class Login extends Component {
   }
 }
 
-export default graphql(SignupMutation, { name: "SignupMutation" })(Login);
+export default Login;

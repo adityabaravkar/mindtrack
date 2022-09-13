@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router";
-import { graphql } from "react-apollo";
-import { SignupMutation } from "../../mutation/mutation";
 import { Link } from "react-router-dom";
 import "../../App.css";
 
@@ -182,4 +180,4 @@ class SignUp extends Component {
   }
 }
 
-export default graphql(SignupMutation, { name: "SignupMutation" })(SignUp);
+export default SignUp;
