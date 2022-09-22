@@ -10,6 +10,7 @@ class SignUp extends Component {
       firstName: "",
       email: "",
       password: "",
+      isAdmin: false,
       status: "",
       authFlag: "",
       response: "",
@@ -20,6 +21,7 @@ class SignUp extends Component {
     this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
     this.emailChangeHandler = this.emailChangeHandler.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.userTypeChanged = this.userTypeChanged.bind(this);
   }
 
   firstNameChangeHandler = (e) => {
@@ -40,17 +42,16 @@ class SignUp extends Component {
     });
   };
 
+  userTypeChanged = (e) => {
+    this.setState({
+      isAdmin: e.target.value === 1 ? false : true,
+    });
+  };
+
   handleSubmit = async (e) => {
     e.preventDefault();
     console.log("in here", this.state);
-    let mutationResponse = await this.props.SignupMutation({
-      variables: {
-        firstName: this.state.firstName,
-        email: this.state.email,
-        password: this.state.password,
-      },
-    });
-    let result = mutationResponse.data.userSignup;
+    let result = e;
     console.log("result", result);
     if (result) {
       console.log("Response", result);
@@ -122,7 +123,7 @@ class SignUp extends Component {
               <div class="input">
                 <input
                   tabindex="1"
-                  class="inputBox_signup form-control"
+                  class="inputBox_signup form-control rounded"
                   type="text"
                   name="firstName"
                   id="firstName"
@@ -139,7 +140,7 @@ class SignUp extends Component {
                 <input
                   tabindex="2"
                   type="email"
-                  class="inputBox_signup form-control"
+                  class="inputBox_signup form-control rounded"
                   name="email"
                   id="email"
                   onChange={this.emailChangeHandler}
@@ -154,11 +155,23 @@ class SignUp extends Component {
                   tabindex="3"
                   type="password"
                   name="password"
-                  class="inputBox_signup form-control"
+                  class="inputBox_signup form-control rounded"
                   id="password"
                   onChange={this.passwordChangeHandler}
                   required
                 />
+              </div>
+              <div class="mb-1 label-style-signup-font">
+                Select your <strong>Role: </strong>
+                <br />
+                <select
+                  className="mt-1 rounded"
+                  name="userType"
+                  onChange={this.userTypeChanged}
+                >
+                  <option value="1">Patient</option>
+                  <option value="2">Doctor</option>
+                </select>
               </div>
             </div>
             <div className="text-center">

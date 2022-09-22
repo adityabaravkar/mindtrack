@@ -7,25 +7,19 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: "",
       email: "",
       password: "",
+      role: "Patient",
       status: "",
       authFlag: "",
       response: "",
       err: "",
       red: "",
     };
-    this.firstNameChangeHandler = this.firstNameChangeHandler.bind(this);
     this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
     this.emailChangeHandler = this.emailChangeHandler.bind(this);
+    this.roleChangeHandler = this.roleChangeHandler.bind(this);
   }
-
-  firstNameChangeHandler = (e) => {
-    this.setState({
-      firstName: e.target.value,
-    });
-  };
 
   emailChangeHandler = (e) => {
     this.setState({
@@ -36,6 +30,15 @@ class Login extends Component {
   passwordChangeHandler = (e) => {
     this.setState({
       password: e.target.value,
+    });
+  };
+
+  roleChangeHandler = (e) => {
+    console.log(e.target.value);
+    this.setState({
+      role: e.target.value,
+      email: "",
+      password: "",
     });
   };
 
@@ -78,6 +81,19 @@ class Login extends Component {
             id="new_user_session"
             onSubmit={this.handleSubmit}
           >
+            <div className="text-center">
+              <h2 className="h3 mb-3 font-weight-normal signin">Sign in as</h2>
+              <select
+                className="rounded"
+                onChange={this.roleChangeHandler}
+                id="options"
+              >
+                <option value="Patient">Patient</option>
+                <option value="Doctor">Doctor</option>
+              </select>
+            </div>
+
+            <br />
             <div class="secondary_fields">
               <div class="mb-1 label-style-signup-font">
                 Enter your <strong>Email address</strong>
@@ -85,7 +101,7 @@ class Login extends Component {
                 <input
                   tabindex="2"
                   type="email"
-                  class="inputBox_signup form-control"
+                  class="inputBox_signup form-control rounded"
                   name="email"
                   id="email"
                   onChange={this.emailChangeHandler}
@@ -100,7 +116,7 @@ class Login extends Component {
                   tabindex="3"
                   type="password"
                   name="password"
-                  class="inputBox_signup form-control"
+                  class="inputBox_signup form-control rounded"
                   id="password"
                   onChange={this.passwordChangeHandler}
                   required
