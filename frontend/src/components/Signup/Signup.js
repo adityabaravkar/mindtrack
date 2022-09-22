@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import "../../App.css";
+import axios from "axios";
+import { Authentication } from "../../services";
 
 class SignUp extends Component {
   constructor(props) {
@@ -50,28 +52,40 @@ class SignUp extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("in here", this.state);
-    let result = e;
-    console.log("result", result);
-    if (result) {
-      console.log("Response", result);
-      if (result.status === "200") {
-        localStorage.setItem("userId", result.userId);
-        localStorage.setItem("userName", result.userName);
-        localStorage.setItem("userEmail", result.userEmail);
-        localStorage.setItem("token", result.token);
-        this.setState({
-          response: result.message,
-          status: "Success",
-          red: <Redirect to="/home"></Redirect>,
-        });
-      } else {
+    const requestBody = {
+      userName: this.state.firstName,
+      email: this.state.email,
+      password: this.state.password,
+      role: this.state.isAdmin ? "therapist" : "patient",
+    };
+    axios
+      .post("http://localhost:9000/signup", requestBody)
+      .then((response) => {
+        if (response.status === 200) {
+          const result = response.data;
+          Authentication.setAuthData(
+            result.user.id,
+            result.token,
+            result.user.role
+          );
+          this.setState({
+            response: result.message,
+            status: "Success",
+            red: <Redirect to="/home"></Redirect>,
+          });
+        } else {
+          this.setState({
+            status: "Error",
+            response: response.data.message,
+          });
+        }
+      })
+      .catch((error) => {
         this.setState({
           status: "Error",
-          response: result.message,
+          response: error.response.data.message,
         });
-      }
-    }
+      });
   };
 
   render() {
@@ -89,7 +103,7 @@ class SignUp extends Component {
     } else if (this.state.status === "Error") {
       remove = (
         <div class="alert alert-danger" role="alert">
-          User with Name: {this.state.firstName} already present.
+          {this.state.response}
         </div>
       );
     }
@@ -108,11 +122,7 @@ class SignUp extends Component {
         {redirectVar}
         <div class="login-sidebar">
           <div class="sidebar-header mb-5">Welcome to MindTrack</div>
-          <form
-            class="form-stacked"
-            id="new_user_session"
-            onSubmit={this.handleSubmit}
-          >
+          <form class="form-stacked" id="new_user_session">
             <div class="clearfix">
               <label
                 for="user_session_email"
@@ -170,7 +180,7 @@ class SignUp extends Component {
                   onChange={this.userTypeChanged}
                 >
                   <option value="1">Patient</option>
-                  <option value="2">Doctor</option>
+                  <option value="2">Therapist</option>
                 </select>
               </div>
             </div>
@@ -181,6 +191,7 @@ class SignUp extends Component {
                 value="Sign me up!"
                 class="btn-dark btn-large btn-signup mt-5"
                 data-disable-with="Sign me up!"
+                onClick={this.handleSubmit}
               />
               <div className="mt-3">
                 Already a member? <Link to="/login">Log in</Link>

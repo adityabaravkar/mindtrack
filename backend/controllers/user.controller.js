@@ -7,8 +7,9 @@ exports.signup = async (req, res, next) => {
   try {
     const user = new User(req.body);
     const savedUser = await user.save();
-    res.status(httpStatus.CREATED);
-    res.send(savedUser.transform());
+    //res.status(httpStatus.CREATED);
+    //res.send(savedUser.transform());
+    await this.login(req, res, next);
   } catch (error) {
     return next(User.checkDuplicateEmailError(error));
   }
