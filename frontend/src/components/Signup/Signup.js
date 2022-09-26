@@ -122,7 +122,11 @@ class SignUp extends Component {
         {redirectVar}
         <div class="login-sidebar">
           <div class="sidebar-header mb-5">Welcome to MindTrack</div>
-          <form class="form-stacked" id="new_user_session">
+          <form
+            class="form-stacked"
+            id="new_user_session"
+            onSubmit={this.handleSubmit}
+          >
             <div class="clearfix">
               <label
                 for="user_session_email"
@@ -191,7 +195,6 @@ class SignUp extends Component {
                 value="Sign me up!"
                 class="btn-dark btn-large btn-signup mt-5"
                 data-disable-with="Sign me up!"
-                onClick={this.handleSubmit}
               />
               <div className="mt-3">
                 Already a member? <Link to="/login">Log in</Link>
