@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import "../../App.css";
+import axios from "axios";
+import {Authentication} from "../../services";
 
 class Login extends Component {
   constructor(props) {
@@ -40,6 +42,43 @@ class Login extends Component {
       email: "",
       password: "",
     });
+  };
+
+  handleSubmit = async (e) => {
+    e.preventDefault();
+    const requestBody = {
+      email: this.state.email,
+      password: this.state.password,
+      role: this.state.isAdmin ? "therapist" : "patient",
+    };
+    axios
+        .post("http://localhost:9000/login", requestBody)
+        .then((response) => {
+          if (response.status === 200) {
+            const result = response.data;
+            Authentication.setAuthData(
+                result.user.id,
+                result.token,
+                result.user.role
+            );
+            this.setState({
+              response: result.message,
+              status: "Success",
+              red: <Redirect to="/home"></Redirect>,
+            });
+          } else {
+            this.setState({
+              status: "Error",
+              response: response.data.message,
+            });
+          }
+        })
+        .catch((error) => {
+          this.setState({
+            status: "Error",
+            response: error.response.data.message,
+          });
+        });
   };
 
   render() {

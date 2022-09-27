@@ -6,6 +6,7 @@ const mongoose = require("./services/mongoose");
 const passport = require("passport");
 const passportJwt = require("./services/passport");
 
+//console.log(process.env)
 //connect to database
 mongoose.connect();
 
