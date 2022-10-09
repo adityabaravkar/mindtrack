@@ -3,7 +3,7 @@ import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import "../../App.css";
 import axios from "axios";
-import {Authentication} from "../../services";
+import { Authentication } from "../../services";
 
 class Login extends Component {
   constructor(props) {
@@ -52,33 +52,33 @@ class Login extends Component {
       role: this.state.isAdmin ? "therapist" : "patient",
     };
     axios
-        .post("http://localhost:9000/login", requestBody)
-        .then((response) => {
-          if (response.status === 200) {
-            const result = response.data;
-            Authentication.setAuthData(
-                result.user.id,
-                result.token,
-                result.user.role
-            );
-            this.setState({
-              response: result.message,
-              status: "Success",
-              red: <Redirect to="/home"></Redirect>,
-            });
-          } else {
-            this.setState({
-              status: "Error",
-              response: response.data.message,
-            });
-          }
-        })
-        .catch((error) => {
+      .post("http://localhost:9000/login", requestBody)
+      .then((response) => {
+        if (response.status === 200) {
+          const result = response.data;
+          Authentication.setAuthData(
+            result.user.id,
+            result.token,
+            result.user.role
+          );
+          this.setState({
+            response: result.message,
+            status: "Success",
+            red: <Redirect to="/patient"></Redirect>,
+          });
+        } else {
           this.setState({
             status: "Error",
-            response: error.response.data.message,
+            response: response.data.message,
           });
+        }
+      })
+      .catch((error) => {
+        this.setState({
+          status: "Error",
+          response: error.response.data.message,
         });
+      });
   };
 
 
@@ -86,14 +86,14 @@ class Login extends Component {
     let redirectVar = this.state.red;
 
     if (localStorage.getItem("token")) {
-      redirectVar = <Redirect to="/home" />;
+      redirectVar = <Redirect to="/patient" />;
     } else {
       redirectVar = "";
     }
     let remove = null;
     if (this.state.status === "") remove = "";
     else if (this.state.status === "Success") {
-      remove = <Redirect to="/home" />;
+      remove = <Redirect to="/patient" />;
     } else if (this.state.status === "Error") {
       remove = (
         <div class="alert alert-danger" role="alert">
