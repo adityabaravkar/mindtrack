@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
+import { Redirect } from "react-router";
 
 import routes from "../../routes.js";
 
@@ -26,6 +27,13 @@ function Header() {
     }
     return "Brand";
   };
+
+  const logout = (e) => {
+    e.preventDefault();
+    window.localStorage.clear();
+    <Redirect to="/login"></Redirect>;
+  };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -53,11 +61,7 @@ function Header() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto" navbar>
             <Nav.Item>
-              <Nav.Link
-                className="m-0"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
-              >
+              <Nav.Link className="m-0" onClick={logout}>
                 <span className="no-icon">Log out</span>
               </Nav.Link>
             </Nav.Item>

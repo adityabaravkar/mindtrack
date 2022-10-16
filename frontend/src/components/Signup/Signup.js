@@ -71,7 +71,7 @@ class SignUp extends Component {
           this.setState({
             response: result.message,
             status: "Success",
-            red: <Redirect to="/home"></Redirect>,
+            red: <Redirect to="/patient"></Redirect>,
           });
         } else {
           this.setState({
@@ -92,7 +92,7 @@ class SignUp extends Component {
     let redirectVar = this.state.red;
 
     if (localStorage.getItem("token")) {
-      redirectVar = <Redirect to="/home" />;
+      redirectVar = <Redirect to="/patient" />;
     } else {
       redirectVar = "";
     }
