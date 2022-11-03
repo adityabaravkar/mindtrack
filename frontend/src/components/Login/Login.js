@@ -81,7 +81,6 @@ class Login extends Component {
       });
   };
 
-
   render() {
     let redirectVar = this.state.red;
 
@@ -172,7 +171,10 @@ class Login extends Component {
                 data-disable-with="Log in"
               />
               <div className="mt-3">
-                New to MindTrack? <Link to="/signup">Sign Up</Link>
+                New to MindTrack?{" "}
+                <Link to="/signup" style={{ color: "blue" }}>
+                  Sign Up
+                </Link>
               </div>
             </div>
           </form>

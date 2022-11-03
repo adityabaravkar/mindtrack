@@ -197,7 +197,10 @@ class SignUp extends Component {
                 data-disable-with="Sign me up!"
               />
               <div className="mt-3">
-                Already a member? <Link to="/login">Log in</Link>
+                Already a member?{" "}
+                <Link to="/login" style={{ color: "blue" }}>
+                  Log in
+                </Link>
               </div>
             </div>
           </form>

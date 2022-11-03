@@ -7,17 +7,11 @@ import { Redirect } from "react-router";
 import cookie from "react-cookies";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     let redirectVar = null;
 
     if (cookie.load("cookie")) {
-      // localStorage.setItem('auth', this.state.authFlag);
       redirectVar = <Redirect to="/home" />;
-      // this.componentDidMount();
     } else {
       redirectVar = "";
     }

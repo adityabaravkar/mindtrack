@@ -19,7 +19,7 @@ function User() {
                       <Form.Group>
                         <label>Email (disabled)</label>
                         <Form.Control
-                          defaultValue="abc@mail.com"
+                          defaultValue="shadow@mail.com"
                           disabled
                           placeholder="Email"
                           type="email"
@@ -32,7 +32,7 @@ function User() {
                       <Form.Group>
                         <label>First Name</label>
                         <Form.Control
-                          defaultValue="Harsh"
+                          defaultValue="Shadow"
                           placeholder="Company"
                           type="text"
                         ></Form.Control>
@@ -42,7 +42,7 @@ function User() {
                       <Form.Group>
                         <label>Last Name</label>
                         <Form.Control
-                          defaultValue="Sheth"
+                          defaultValue=""
                           placeholder="Last Name"
                           type="text"
                         ></Form.Control>
@@ -76,7 +76,7 @@ function User() {
                       <Form.Group>
                         <label>Country</label>
                         <Form.Control
-                          defaultValue="Andrew"
+                          defaultValue="United States"
                           placeholder="Country"
                           type="text"
                         ></Form.Control>
@@ -86,7 +86,8 @@ function User() {
                       <Form.Group>
                         <label>Postal Code</label>
                         <Form.Control
-                          placeholder="ZIP Code"
+                          defaultValue="95112"
+                          placeholder="Postal Code"
                           type="number"
                         ></Form.Control>
                       </Form.Group>
