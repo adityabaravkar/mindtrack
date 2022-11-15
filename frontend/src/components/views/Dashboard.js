@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import DataTable from "react-data-table-component";
 
 function Dashboard() {
+  useEffect(() => {
+    document.title = "Therapist Dashboard";
+  }, []);
+
   const [columns, setColumns] = useState([]);
   const [data, setData] = useState([]);
 
@@ -18,13 +22,13 @@ function Dashboard() {
       const row = dataStringLines[i].split(
         /,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/
       );
-      if (headers && row.length == headers.length) {
+      if (headers && row.length === headers.length) {
         const obj = {};
         for (let j = 0; j < headers.length; j++) {
           let d = row[j];
           if (d.length > 0) {
-            if (d[0] == '"') d = d.substring(1, d.length - 1);
-            if (d[d.length - 1] == '"') d = d.substring(d.length - 2, 1);
+            if (d[0] === '"') d = d.substring(1, d.length - 1);
+            if (d[d.length - 1] === '"') d = d.substring(d.length - 2, 1);
           }
           if (headers[j]) {
             obj[headers[j]] = d;

@@ -3,6 +3,7 @@ import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import "../../App.css";
 import axios from "axios";
+import { toast } from "react-toastify";
 import { Authentication } from "../../services";
 
 class Login extends Component {
@@ -11,7 +12,7 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      role: "Patient",
+      role: "patient",
       status: "",
       authFlag: "",
       response: "",
@@ -21,6 +22,10 @@ class Login extends Component {
     this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
     this.emailChangeHandler = this.emailChangeHandler.bind(this);
     this.roleChangeHandler = this.roleChangeHandler.bind(this);
+  }
+
+  componentDidMount() {
+    document.title = "Login";
   }
 
   emailChangeHandler = (e) => {
@@ -39,8 +44,6 @@ class Login extends Component {
     console.log(e.target.value);
     this.setState({
       role: e.target.value,
-      email: "",
-      password: "",
     });
   };
 
@@ -49,28 +52,49 @@ class Login extends Component {
     const requestBody = {
       email: this.state.email,
       password: this.state.password,
-      role: this.state.isAdmin ? "therapist" : "patient",
+      role: this.state.role,
     };
     axios
       .post("http://localhost:9000/login", requestBody)
       .then((response) => {
         if (response.status === 200) {
           const result = response.data;
-          Authentication.setAuthData(
-            result.user.id,
-            result.token,
-            result.user.role
-          );
-          this.setState({
-            response: result.message,
-            status: "Success",
-            red: <Redirect to="/patient"></Redirect>,
-          });
+          if (result.user.role !== this.state.role) {
+            toast.error("You're signing in with incorrect role", {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          } else {
+            Authentication.setAuthData(
+              result.user.id,
+              result.token,
+              result.user.role
+            );
+            if (result.user.role !== this.state.role) {
+              toast.error("You're signing in with incorrect role", {
+                position: toast.POSITION.TOP_CENTER,
+              });
+            } else if (result.user.role === "patient") {
+              this.setState({
+                response: result.message,
+                status: "Success",
+                red: <Redirect to="/patient"></Redirect>,
+              });
+            } else if (result.user.role === "therapist") {
+              this.setState({
+                response: result.message,
+                status: "Success",
+                red: <Redirect to="/therapist"></Redirect>,
+              });
+            }
+          }
         } else {
           this.setState({
             status: "Error",
             response: response.data.message,
           });
+          // toast.error("User not found", {
+          //   position: toast.POSITION.TOP_CENTER,
+          // });
         }
       })
       .catch((error) => {
@@ -78,28 +102,43 @@ class Login extends Component {
           status: "Error",
           response: error.response.data.message,
         });
+        toast.error("User not found", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       });
   };
 
   render() {
-    let redirectVar = this.state.red;
+    // let redirectVar = this.state.red;
+    // let userType = localStorage.getItem("accountType");
 
-    if (localStorage.getItem("token")) {
-      redirectVar = <Redirect to="/patient" />;
-    } else {
-      redirectVar = "";
+    // if (userType === "patient") {
+    //   redirectVar = <Redirect to="/patient" />;
+    // } else if (userType === "therapist") {
+    //   redirectVar = <Redirect to="/therapist" />;
+    // } else {
+    //   redirectVar = "";
+    // }
+    // let remove = null;
+    // if (this.state.status === "") remove = "";
+    // else if (this.state.status === "Success" && userType === "patient") {
+    //   remove = <Redirect to="/patient" />;
+    // } else if (this.state.status === "Error") {
+    //   remove = (
+    //     <div class="alert alert-danger" role="alert">
+    //       User with Name: {this.state.firstName} already present.
+    //     </div>
+    //   );
+    // }
+
+    const userType = localStorage.getItem("accountType");
+
+    if (userType === "patient") {
+      window.location.replace("/patient/dashboard");
+    } else if (userType === "therapist") {
+      window.location.replace("/therapist/dashboard");
     }
-    let remove = null;
-    if (this.state.status === "") remove = "";
-    else if (this.state.status === "Success") {
-      remove = <Redirect to="/patient" />;
-    } else if (this.state.status === "Error") {
-      remove = (
-        <div class="alert alert-danger" role="alert">
-          User with Name: {this.state.firstName} already present.
-        </div>
-      );
-    }
+
     return (
       <div
         style={{
@@ -111,8 +150,8 @@ class Login extends Component {
           justifyContent: "center",
         }}
       >
-        {remove}
-        {redirectVar}
+        {/* {remove}
+        {redirectVar} */}
         <div class="login-sidebar">
           <div class="sidebar-header mb-5">Welcome to MindTrack</div>
           <form
@@ -127,8 +166,8 @@ class Login extends Component {
                 onChange={this.roleChangeHandler}
                 id="options"
               >
-                <option value="Patient">Patient</option>
-                <option value="Doctor">Doctor</option>
+                <option value="patient">Patient</option>
+                <option value="therapist">Doctor</option>
               </select>
             </div>
 

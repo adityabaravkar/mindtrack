@@ -18,14 +18,9 @@ function Sidebar({ color, image, routes }) {
       />
       <div className="sidebar-wrapper">
         <div className="logo d-flex align-items-center justify-content-start">
-          <a href="" className="simple-text logo-mini mx-1">
-            <div className="logo-img">
-              <img src={logo} alt="..." />
-            </div>
-          </a>
-          {/* <a className="simple-text" href="">
-            MindTrack
-          </a> */}
+          <div className="logo-img">
+            <img src={logo} alt="..." />
+          </div>
         </div>
         <Nav>
           {routes.map((prop, key) => {

@@ -1,9 +1,9 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
-import { Redirect } from "react-router";
 
 import routes from "../../routes.js";
+import patientRoutes from "../../patientRoutes.js";
 
 function Header() {
   const location = useLocation();
@@ -20,18 +20,34 @@ function Header() {
   };
 
   const getBrandText = () => {
-    for (let i = 0; i < routes.length; i++) {
-      if (location.pathname.indexOf(routes[i].layout + routes[i].path) !== -1) {
-        return routes[i].name;
+    const role = localStorage.getItem("accountType");
+    if (role === "therapist") {
+      for (let i = 0; i < routes.length; i++) {
+        if (
+          location.pathname.indexOf(routes[i].layout + routes[i].path) !== -1
+        ) {
+          return routes[i].name;
+        }
       }
+      return "Brand";
+    } else if (role === "patient") {
+      for (let i = 0; i < patientRoutes.length; i++) {
+        if (
+          location.pathname.indexOf(
+            patientRoutes[i].layout + patientRoutes[i].path
+          ) !== -1
+        ) {
+          return patientRoutes[i].name;
+        }
+      }
+      return "Brand";
     }
-    return "Brand";
   };
 
   const logout = (e) => {
     e.preventDefault();
     window.localStorage.clear();
-    <Redirect to="/login"></Redirect>;
+    window.location.replace("/login");
   };
 
   return (
@@ -60,11 +76,9 @@ function Header() {
         </Navbar.Toggle>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto" navbar>
-            <Nav.Item>
-              <Nav.Link className="m-0" onClick={logout}>
-                <span className="no-icon">Log out</span>
-              </Nav.Link>
-            </Nav.Item>
+            <Link to="/login" className="nav-link" onClick={logout}>
+              Log out
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

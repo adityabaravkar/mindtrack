@@ -7,6 +7,10 @@ import { Redirect } from "react-router";
 import cookie from "react-cookies";
 
 class App extends Component {
+  componentDidMount() {
+    document.title = "MindTrack";
+  }
+
   render() {
     let redirectVar = null;
 

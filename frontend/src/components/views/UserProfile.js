@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Button, Card, Form, Container, Row, Col } from "react-bootstrap";
 
 function User() {
+  useEffect(() => {
+    document.title = "User Profile";
+  }, []);
   return (
     <>
       <Container fluid>

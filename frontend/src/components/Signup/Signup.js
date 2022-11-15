@@ -12,7 +12,7 @@ class SignUp extends Component {
       firstName: "",
       email: "",
       password: "",
-      isAdmin: false,
+      role: "patient",
       status: "",
       authFlag: "",
       response: "",
@@ -24,6 +24,10 @@ class SignUp extends Component {
     this.emailChangeHandler = this.emailChangeHandler.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.userTypeChanged = this.userTypeChanged.bind(this);
+  }
+
+  componentDidMount() {
+    document.title = "Signup";
   }
 
   firstNameChangeHandler = (e) => {
@@ -46,7 +50,7 @@ class SignUp extends Component {
 
   userTypeChanged = (e) => {
     this.setState({
-      isAdmin: e.target.value === 1 ? false : true,
+      role: e.target.value,
     });
   };
 
@@ -56,7 +60,7 @@ class SignUp extends Component {
       userName: this.state.firstName,
       email: this.state.email,
       password: this.state.password,
-      role: this.state.isAdmin ? "therapist" : "patient",
+      role: this.state.role,
     };
     axios
       .post("http://localhost:9000/signup", requestBody)
@@ -68,11 +72,19 @@ class SignUp extends Component {
             result.token,
             result.user.role
           );
-          this.setState({
-            response: result.message,
-            status: "Success",
-            red: <Redirect to="/patient"></Redirect>,
-          });
+          if (this.state.role === "patient") {
+            this.setState({
+              response: result.message,
+              status: "Success",
+              red: <Redirect to="/patient"></Redirect>,
+            });
+          } else if (this.state.role === "therapist") {
+            this.setState({
+              response: result.message,
+              status: "Success",
+              red: <Redirect to="/therapist"></Redirect>,
+            });
+          }
         } else {
           this.setState({
             status: "Error",
@@ -183,8 +195,8 @@ class SignUp extends Component {
                   name="userType"
                   onChange={this.userTypeChanged}
                 >
-                  <option value="1">Patient</option>
-                  <option value="2">Therapist</option>
+                  <option value="patient">Patient</option>
+                  <option value="therapist">Therapist</option>
                 </select>
               </div>
             </div>
