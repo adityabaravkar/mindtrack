@@ -3,6 +3,7 @@ import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import "../../App.css";
 import axios from "axios";
+import { toast } from "react-toastify";
 import { Authentication } from "../../services";
 
 class SignUp extends Component {
@@ -15,7 +16,6 @@ class SignUp extends Component {
       role: "patient",
       status: "",
       authFlag: "",
-      response: "",
       err: "",
       red: "",
     };
@@ -57,7 +57,7 @@ class SignUp extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     const requestBody = {
-      userName: this.state.firstName,
+      firstName: this.state.firstName,
       email: this.state.email,
       password: this.state.password,
       role: this.state.role,
@@ -95,7 +95,9 @@ class SignUp extends Component {
       .catch((error) => {
         this.setState({
           status: "Error",
-          response: error.response.data.message,
+        });
+        toast.error(error.response.data.message, {
+          position: toast.POSITION.TOP_CENTER,
         });
       });
   };
@@ -112,12 +114,6 @@ class SignUp extends Component {
     if (this.state.status === "") remove = "";
     else if (this.state.status === "Success") {
       remove = <Redirect to="/home" />;
-    } else if (this.state.status === "Error") {
-      remove = (
-        <div class="alert alert-danger" role="alert">
-          {this.state.response}
-        </div>
-      );
     }
     return (
       <div

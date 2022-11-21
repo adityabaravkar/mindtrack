@@ -1,4 +1,5 @@
 const httpStatus = require("http-status");
+const validate = require("express-validation");
 
 // hanlde not found error
 exports.handleNotFound = (req, res, next) => {
@@ -13,9 +14,21 @@ exports.handleNotFound = (req, res, next) => {
 exports.handleError = (err, req, res, next) => {
   res.status(err.status || httpStatus.INTERNAL_SERVER_ERROR);
   res.json({
-    message: err.message,
+    message: getErrorMessage(err),
     extra: err.extra,
     errors: err,
   });
   res.end();
+};
+
+const getErrorMessage = (error) => {
+  if (error instanceof validate.ValidationError) {
+    let message = "";
+    const validateErrors = error.errors;
+    for (let i = 0; i < validateErrors.length; i++) {
+      message += validateErrors[i].messages[0] + "\n";
+    }
+    return message;
+  }
+  return error.message;
 };

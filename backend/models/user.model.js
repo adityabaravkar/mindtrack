@@ -11,9 +11,12 @@ const userSchema = mongoose.Schema({
     unique: true,
     lowercase: true,
   },
-  userName: {
+  firstName: {
     type: String,
     required: true,
+  },
+  lastName: {
+    type: String,
   },
   password: {
     type: String,
@@ -28,12 +31,38 @@ const userSchema = mongoose.Schema({
     default: "patient",
     enum: roles,
   },
+  address: {
+    type: String,
+  },
+  city: {
+    type: String,
+  },
+  country: {
+    type: String,
+  },
+  postalCode: {
+    type: Number,
+  },
+  phone: {
+    type: String,
+  },
 });
 
 userSchema.method({
   transform() {
     const transformed = {};
-    const fields = ["id", "userName", "email", "role"];
+    const fields = [
+      "id",
+      "firstName",
+      "lastName",
+      "email",
+      "role",
+      "address",
+      "city",
+      "country",
+      "postalCode",
+      "phone",
+    ];
     fields.forEach((field) => {
       transformed[field] = this[field];
     });

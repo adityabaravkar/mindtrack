@@ -12,7 +12,7 @@ module.exports = {
       //   .valid(Joi.ref("password"))
       //   .required()
       //   .strict(),
-      userName: Joi.string().max(128).required(),
+      firstName: Joi.string().max(128).required(),
       role: Joi.string().valid(User.roles).required(),
     },
   },
@@ -20,7 +20,13 @@ module.exports = {
     body: {
       id: Joi.objectId().required(),
       email: Joi.string().email().required(),
-      userName: Joi.string().max(128).required(),
+      firstName: Joi.string().max(128).required(),
+      lastName: Joi.string().max(128),
+      address: Joi.string().max(128),
+      city: Joi.string().max(128),
+      country: Joi.string().max(128),
+      postalCode: Joi.number(),
+      phone: Joi.string().max(128),
     },
   },
 };
