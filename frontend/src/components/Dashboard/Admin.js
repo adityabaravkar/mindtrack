@@ -15,7 +15,8 @@ function Admin() {
   const mainPanel = React.useRef(null);
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/patient") {
+      console.log("custom: ", prop.layout);
+      if (prop.layout === "/therapist") {
         return (
           <Route
             path={prop.layout + prop.path}

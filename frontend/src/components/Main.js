@@ -7,6 +7,11 @@ import LandingPage from "./LandingPage/Landing_page.js";
 import Login from "./Login/Login";
 import SignUp from "./Signup/Signup.js";
 import AdminLayout from "./Dashboard/Admin.js";
+import PatientLayout from "./Dashboard/Patient.js";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
 
 //Create a Main Component
 class Main extends Component {
@@ -19,8 +24,14 @@ class Main extends Component {
           <Route exact path="/" component={LandingPage} />
           <Switch>
             <Route
-              path="/patient"
+              path="/therapist"
               render={(props) => <AdminLayout {...props} />}
+            />
+          </Switch>
+          <Switch>
+            <Route
+              path="/patient"
+              render={(props) => <PatientLayout {...props} />}
             />
           </Switch>
         </BrowserRouter>

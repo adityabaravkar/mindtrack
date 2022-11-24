@@ -3,6 +3,7 @@ import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import "../../App.css";
 import axios from "axios";
+import { toast } from "react-toastify";
 import { Authentication } from "../../services";
 
 class SignUp extends Component {
@@ -12,10 +13,9 @@ class SignUp extends Component {
       firstName: "",
       email: "",
       password: "",
-      isAdmin: false,
+      role: "patient",
       status: "",
       authFlag: "",
-      response: "",
       err: "",
       red: "",
     };
@@ -24,6 +24,10 @@ class SignUp extends Component {
     this.emailChangeHandler = this.emailChangeHandler.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.userTypeChanged = this.userTypeChanged.bind(this);
+  }
+
+  componentDidMount() {
+    document.title = "Signup";
   }
 
   firstNameChangeHandler = (e) => {
@@ -46,17 +50,17 @@ class SignUp extends Component {
 
   userTypeChanged = (e) => {
     this.setState({
-      isAdmin: e.target.value === 1 ? false : true,
+      role: e.target.value,
     });
   };
 
   handleSubmit = async (e) => {
     e.preventDefault();
     const requestBody = {
-      userName: this.state.firstName,
+      firstName: this.state.firstName,
       email: this.state.email,
       password: this.state.password,
-      role: this.state.isAdmin ? "therapist" : "patient",
+      role: this.state.role,
     };
     axios
       .post("http://localhost:9000/signup", requestBody)
@@ -68,11 +72,19 @@ class SignUp extends Component {
             result.token,
             result.user.role
           );
-          this.setState({
-            response: result.message,
-            status: "Success",
-            red: <Redirect to="/patient"></Redirect>,
-          });
+          if (this.state.role === "patient") {
+            this.setState({
+              response: result.message,
+              status: "Success",
+              red: <Redirect to="/patient"></Redirect>,
+            });
+          } else if (this.state.role === "therapist") {
+            this.setState({
+              response: result.message,
+              status: "Success",
+              red: <Redirect to="/therapist"></Redirect>,
+            });
+          }
         } else {
           this.setState({
             status: "Error",
@@ -83,7 +95,9 @@ class SignUp extends Component {
       .catch((error) => {
         this.setState({
           status: "Error",
-          response: error.response.data.message,
+        });
+        toast.error(error.response.data.message, {
+          position: toast.POSITION.TOP_CENTER,
         });
       });
   };
@@ -100,12 +114,6 @@ class SignUp extends Component {
     if (this.state.status === "") remove = "";
     else if (this.state.status === "Success") {
       remove = <Redirect to="/home" />;
-    } else if (this.state.status === "Error") {
-      remove = (
-        <div class="alert alert-danger" role="alert">
-          {this.state.response}
-        </div>
-      );
     }
     return (
       <div
@@ -183,8 +191,8 @@ class SignUp extends Component {
                   name="userType"
                   onChange={this.userTypeChanged}
                 >
-                  <option value="1">Patient</option>
-                  <option value="2">Therapist</option>
+                  <option value="patient">Patient</option>
+                  <option value="therapist">Therapist</option>
                 </select>
               </div>
             </div>

@@ -5,8 +5,13 @@ import { Component } from "react";
 import { Link } from "react-router-dom";
 import { Redirect } from "react-router";
 import cookie from "react-cookies";
+// import WordArt from "react-wordart";
 
 class App extends Component {
+  componentDidMount() {
+    document.title = "MindTrack";
+  }
+
   render() {
     let redirectVar = null;
 
@@ -51,6 +56,17 @@ class App extends Component {
             </div>
           </header>
         </div>
+        {/* <div className="w-50">
+          <div>
+            <WordArt
+              text='"Mental health problems don’t define who you are. They are something
+            you experience. You walk in the rain and you feel the rain, but you
+            are not the rain." — Matt Haig'
+              theme={`italicOutline`}
+              fontSize={50}
+            />
+          </div>
+        </div> */}
       </div>
     );
   }
