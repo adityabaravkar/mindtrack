@@ -55,3 +55,16 @@ exports.detail = async (req, res, next) => {
     next(error);
   }
 };
+
+
+exports.getDoctors = async (req, res, next) => {
+  try {
+    console.log("++++++++++++++ Calling getDoctors from Mongo    ++++++++++++++++++++");
+    const doctors = await User.find({role:'therapist'})
+    res.status(httpStatus.OK);
+    res.send(doctors);
+    console.log("++++++++++++++ Ending getDoctors request    ++++++++++++++++++++");
+  } catch (error) {
+    next(error);
+  }
+};
