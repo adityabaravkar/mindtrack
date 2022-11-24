@@ -44,3 +44,13 @@ exports.update = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.detail = async (req, res, next) => {
+  try {
+    const userDetail = await User.findById(req.params.userId);
+    res.status(httpStatus.OK);
+    res.send(userDetail.transform());
+  } catch (error) {
+    next(error);
+  }
+};
