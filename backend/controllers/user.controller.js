@@ -47,6 +47,7 @@ exports.update = async (req, res, next) => {
 
 exports.detail = async (req, res, next) => {
   try {
+    console.log("success user caled");
     const userDetail = await User.findById(req.params.userId);
     res.status(httpStatus.OK);
     res.send(userDetail.transform());
