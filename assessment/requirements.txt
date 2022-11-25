@@ -1,0 +1,7 @@
+flask
+flask_cors
+pymongo
+flask_pymongo
+python-dotenv
+flask-session
+gunicorn
