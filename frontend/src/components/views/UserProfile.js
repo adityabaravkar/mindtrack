@@ -14,6 +14,7 @@ function User() {
   const [country, setCountry] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [phone, setPhone] = useState("");
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     document.title = "User Profile";
@@ -24,6 +25,7 @@ function User() {
       setEmail(result.email);
       setFirstName(result.firstName);
       setLastName(result.lastName);
+      setRole(result.role);
       setAddress(result.address);
       setCity(result.city);
       setCountry(result.country);
@@ -40,6 +42,7 @@ function User() {
       email: email,
       firstName: firstName,
       lastName: lastName,
+      role: role,
       address: address,
       city: city,
       country: country,
