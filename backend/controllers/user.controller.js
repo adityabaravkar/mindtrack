@@ -32,6 +32,7 @@ exports.login = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   try {
+    console.log("update fetched: ", req.body);
     const user = new User(req.body);
     let userDetail = await User.findByIdAndUpdate(
       req.body.id,
@@ -47,7 +48,6 @@ exports.update = async (req, res, next) => {
 
 exports.detail = async (req, res, next) => {
   try {
-    console.log("success user caled");
     const userDetail = await User.findById(req.params.userId);
     res.status(httpStatus.OK);
     res.send(userDetail.transform());
@@ -56,14 +56,17 @@ exports.detail = async (req, res, next) => {
   }
 };
 
-
 exports.getDoctors = async (req, res, next) => {
   try {
-    console.log("++++++++++++++ Calling getDoctors from Mongo    ++++++++++++++++++++");
-    const doctors = await User.find({role:'therapist'})
+    console.log(
+      "++++++++++++++ Calling getDoctors from Mongo    ++++++++++++++++++++"
+    );
+    const doctors = await User.find({ role: "therapist" });
     res.status(httpStatus.OK);
     res.send(doctors);
-    console.log("++++++++++++++ Ending getDoctors request    ++++++++++++++++++++");
+    console.log(
+      "++++++++++++++ Ending getDoctors request    ++++++++++++++++++++"
+    );
   } catch (error) {
     next(error);
   }
