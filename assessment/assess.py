@@ -8,7 +8,7 @@ import csv
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
 pymongo = PyMongo(app)
-CORS(app)
+CORS(app, supports_credentials=True)
 Session(app)
 
 
@@ -141,7 +141,7 @@ def assessment():
         })
 
     if request.method == 'POST':
-        sem_theta = .70
+        sem_theta = .50
         max_items = 27
         item_db = session.get('item_db')
         r = session.get('r')
