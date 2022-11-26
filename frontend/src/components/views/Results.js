@@ -1,24 +1,16 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
-import { Authentication } from "../../services/authentication";
 import axios from "axios";
 
-function Dashboard() {
+function Results() {
   const [myArray, updateMyArray] = useState([]);
 
   useEffect(() => {
-    document.title = "Dashboard";
-    const id = Authentication.userId;
-    axios
-      .get(`http://localhost:9000/myPatients`, {
-        params: {
-          id: id,
-        },
-      })
-      .then((res) => {
-        const result = res.data;
-        updateMyArray(result);
-      });
+    document.title = "Result";
+    axios.get(`http://localhost:9000/getDoctors`).then((res) => {
+      const result = res.data;
+      updateMyArray(result);
+    });
   }, []);
 
   const columns = [
@@ -44,6 +36,18 @@ function Dashboard() {
       cell: (row) => <div>{row.phone}</div>,
       sortable: true,
     },
+    {
+      name: "Connect",
+      cell: (row) => (
+        <button
+          onClick={onRowClicked}
+          value={row._id}
+          className="btn btn-primary m-2"
+        >
+          Connect
+        </button>
+      ),
+    },
   ];
 
   const onRowClicked = (e) => {
@@ -51,22 +55,14 @@ function Dashboard() {
     console.log("row", e.target.value);
   };
 
-  if (myArray.length === 0) {
-    return (
-      <div>
-        <DataTable className="mt-3" pagination highlightOnHover />
-      </div>
-    );
-  } else {
-    return (
-      <DataTable
-        //   onRowClicked={onRowClicked}
-        columns={columns}
-        data={myArray}
-        highlightOnHover
-      />
-    );
-  }
+  return (
+    <DataTable
+      //   onRowClicked={onRowClicked}
+      columns={columns}
+      data={myArray}
+      highlightOnHover
+    />
+  );
 }
 
-export default Dashboard;
+export default Results;
