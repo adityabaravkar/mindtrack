@@ -1,6 +1,5 @@
 import UserProfile from "./components/views/UserProfile.js";
 import PatientDashboard from "./components/views/PatientDashboard.js";
-import Results from "./components/views/Results.js";
 
 const dashboardRoutes = [
   {
@@ -8,13 +7,6 @@ const dashboardRoutes = [
     name: "Dashboard",
     icon: "nc-icon nc-chart-pie-35",
     component: PatientDashboard,
-    layout: "/patient",
-  },
-  {
-    path: "/result",
-    name: "Result",
-    icon: "nc-icon nc-chart-pie-35",
-    component: Results,
     layout: "/patient",
   },
   {
