@@ -1,5 +1,6 @@
 import UserProfile from "./components/views/UserProfile.js";
 import PatientDashboard from "./components/views/PatientDashboard.js";
+import Questionnaire from "./components/views/Questionnaire.js";
 
 const dashboardRoutes = [
   {
@@ -14,6 +15,13 @@ const dashboardRoutes = [
     name: "User Profile",
     icon: "nc-icon nc-circle-09",
     component: UserProfile,
+    layout: "/patient",
+  },
+  {
+    path: "/questionnaire",
+    name: "Questionnaire",
+    icon: "nc-icon nc-circle-09",
+    component: Questionnaire,
     layout: "/patient",
   },
 ];

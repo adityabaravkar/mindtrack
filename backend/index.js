@@ -38,6 +38,7 @@ passport.use("jwt", passportJwt.jwt);
 
 //Define all the routes
 app.use(require("./routes/user.routes"));
+app.use(require("./routes/result.routes"));
 app.use(errorHandler.handleNotFound);
 app.use(errorHandler.handleError);
 
