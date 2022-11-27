@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import "react-phone-number-input/style.css";
 import { Card, Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
+import { Authentication } from "../../services/authentication";
 
 function Questionarie() {
   const [answer, setAnswer] = useState();
   const [question, setQuestion] = useState();
   const [questionCode, setQuestionCode] = useState();
+  const [sessionId, setSessionId] = useState();
   const [isComplete, setIsComplete] = useState();
 
   const formSubmit = (event) => {
@@ -14,9 +16,10 @@ function Questionarie() {
     const body = {
       code: questionCode,
       response: answer,
+      session: sessionId,
     };
     axios
-      .post(`http://127.0.0.1:8080/assess`, body, { withCredentials: true })
+      .post(`http://vast-taiga-12338.herokuapp.com/assess`, body)
       .then((res) => {
         const result = res.data;
         if (result.status === "complete") {
@@ -35,12 +38,15 @@ function Questionarie() {
   useEffect(() => {
     document.title = "Questionnaire";
     axios
-      .get(`http://127.0.0.1:8080/assess`, { withCredentials: true })
+      .get(
+        `http://vast-taiga-12338.herokuapp.com/start/${Authentication.userId}`
+      )
       .then((res) => {
         const result = res.data;
         //console.log("User details", result);
         setQuestion(result.question);
         setQuestionCode(result.code);
+        setSessionId(result.session);
       });
   }, []);
 
