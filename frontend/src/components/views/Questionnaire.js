@@ -120,7 +120,7 @@ function Questionarie() {
 
                   <br />
 
-                  <button className="btn btn-default" type="submit">
+                  <button className="btn btn-primary" type="submit">
                     Submit
                   </button>
                 </form>

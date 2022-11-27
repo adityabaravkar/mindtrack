@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function Results() {
   const [myArray, updateMyArray] = useState([]);
@@ -41,6 +42,7 @@ function Results() {
       cell: (row) => (
         <button
           onClick={onRowClicked}
+          data-msg={row.firstName + " " + row.lastName}
           value={row._id}
           className="btn btn-primary m-2"
         >
@@ -52,7 +54,9 @@ function Results() {
 
   const onRowClicked = (e) => {
     e.preventDefault();
-    console.log("row", e.target.value);
+    toast.success("Connected to Dr. " + e.target.dataset.msg, {
+      position: toast.POSITION.TOP_CENTER,
+    });
   };
 
   if (myArray.length === 0) {
