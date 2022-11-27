@@ -55,14 +55,17 @@ function Results() {
     console.log("row", e.target.value);
   };
 
-  return (
-    <DataTable
-      //   onRowClicked={onRowClicked}
-      columns={columns}
-      data={myArray}
-      highlightOnHover
-    />
-  );
+  if (myArray.length === 0) {
+    return (
+      <div>
+        <DataTable className="mt-3" pagination highlightOnHover />
+      </div>
+    );
+  } else {
+    return (
+      <DataTable columns={columns} pagination data={myArray} highlightOnHover />
+    );
+  }
 }
 
 export default Results;

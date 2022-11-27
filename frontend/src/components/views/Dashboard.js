@@ -17,39 +17,23 @@ function Dashboard() {
       })
       .then((res) => {
         const result = res.data;
+        console.log(result);
         updateMyArray(result);
       });
   }, []);
 
   const columns = [
     {
-      name: "Name",
+      name: "Patient Name",
       sortable: true,
-      cell: (row) => (
-        <div>
-          {row.firstName} {row.lastName}
-        </div>
-      ),
+      cell: (row) => <div>{row.Pname}</div>,
     },
     {
-      name: "Address",
-      cell: (row) => (
-        <div>
-          {row.address}, {row.city}, {row.country}, {row.postalCode}
-        </div>
-      ),
-    },
-    {
-      name: "Phone",
-      cell: (row) => <div>{row.phone}</div>,
+      name: "Prescription",
       sortable: true,
+      cell: (row) => <div>{row.Prescription}</div>,
     },
   ];
-
-  const onRowClicked = (e) => {
-    e.preventDefault();
-    console.log("row", e.target.value);
-  };
 
   if (myArray.length === 0) {
     return (
@@ -59,12 +43,7 @@ function Dashboard() {
     );
   } else {
     return (
-      <DataTable
-        //   onRowClicked={onRowClicked}
-        columns={columns}
-        data={myArray}
-        highlightOnHover
-      />
+      <DataTable columns={columns} pagination data={myArray} highlightOnHover />
     );
   }
 }
