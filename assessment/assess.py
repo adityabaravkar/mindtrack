@@ -1,15 +1,18 @@
-from flask import Flask, request, jsonify, session
-from flask_session import Session
-from flask_pymongo import PyMongo
+from flask import Flask, request, jsonify
+from flask_pymongo import pymongo
+from bson.objectid import ObjectId
 from flask_cors import CORS
 import os
 import csv
+import datetime
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
-pymongo = PyMongo(app)
-CORS(app, supports_credentials=True)
-Session(app)
+client = pymongo.MongoClient(app.config.get("MONGO_URI"))
+db = client.get_database('test')
+sessions = pymongo.collection.Collection(db, 'sessions')
+results = pymongo.collection.Collection(db, 'results')
+CORS(app)
 
 
 def read_item_db(file):
@@ -82,9 +85,7 @@ def estimate_theta(r, b, th):
         while abs(delta) > conv:
             sumnum = 0.0
             sumdem = 0.0
-            #print('b: '+str(b))
             for j in range(J):
-                #print('Value: '+str(b[j]))
                 phat = 1 / (1.0 + math.exp(-1 * (th - b[j])))
                 sumnum = sumnum + 1.0 * (r[j] - phat)
                 sumdem = sumdem - 1.0 * phat * (1.0 - phat)
@@ -113,68 +114,96 @@ def resource_not_found(e):
     return jsonify(error=str(e)), 404
 
 
-@app.route('/assess', methods=['POST', 'GET'])
+@app.route('/start/<string:user_id>', methods=['GET'])
+def start(user_id):
+    item_db = read_item_db('questions.csv')
+    r = []
+    bs = [item_db["b1"][0], item_db["b2"][0], item_db["b3"][0]]
+
+    c = item_db["code"][0]
+    q = item_db["item"][0]
+
+    item_db['code'].remove(item_db['code'][0])
+    item_db['bmean'].remove(item_db['bmean'][0])
+    item_db['b1'].remove(item_db['b1'][0])
+    item_db['b2'].remove(item_db['b2'][0])
+    item_db['b3'].remove(item_db['b3'][0])
+    item_db['item'].remove(item_db['item'][0])
+
+    _id = sessions.insert_one({
+        "r": r,
+        "bs": bs,
+        "theta": [3],
+        "item_db": item_db,
+        "user_id": user_id
+    })
+
+    return jsonify({
+        'status': 'started',
+        'code': c,
+        'question': q,
+        'session': str(_id.inserted_id)
+    })
+
+
+@app.route('/assess', methods=['POST'])
 def assessment():
-    if request.method == 'GET':
-        item_db = read_item_db('questions.csv')
-        r = []
-        session['r'] = r
-        bs = [item_db["b1"][0], item_db["b2"][0], item_db["b3"][0]]
-        session['bs'] = bs
+    sem_theta = .50
+    max_items = 27
+    body = request.json
 
-        c = item_db["code"][0]
-        q = item_db["item"][0]
+    session_id = body['session']
+    session_data = sessions.find_one({'_id': ObjectId(session_id)})
+    r = session_data['r']
+    bs = session_data['bs']
+    theta = session_data['theta']
+    item_db = session_data['item_db']
+    user_id = session_data['user_id']
 
-        item_db['code'].remove(item_db['code'][0])
-        item_db['bmean'].remove(item_db['bmean'][0])
-        item_db['b1'].remove(item_db['b1'][0])
-        item_db['b2'].remove(item_db['b2'][0])
-        item_db['b3'].remove(item_db['b3'][0])
-        item_db['item'].remove(item_db['item'][0])
-        session['item_db'] = item_db
-        session['theta'] = [3]
+    code = body['code']
+    response = body['response']
 
-        return jsonify({
-            'status': 'started',
-            'code': c,
-            'question': q
+    r = r + score(int(response))
+    theta = estimate_theta(r, bs, theta)
+    if theta[1] < sem_theta or len(r) == max_items:
+
+        std_score = str(round(((theta[0] - 1.40)/1.50)*15) + 100)
+
+        results.insert_one({
+            "userId": user_id,
+            "score": std_score,
+            "session": session_id,
+            "dt": datetime.datetime.utcnow()
         })
 
-    if request.method == 'POST':
-        sem_theta = .50
-        max_items = 27
-        item_db = session.get('item_db')
-        r = session.get('r')
-        bs = session.get('bs')
-        theta = session.get('theta')
-
-        body = request.json
-        code = body['code']
-        response = body['response']
-
-        r = r + score(int(response))
-        #print('Score: '+str(score(response)))
-        theta = estimate_theta(r, bs, theta)
-        #print('SE: '+str(theta[1]))
-        #print('len(r): '+str(r))
-        if theta[1] < sem_theta or len(r) == max_items:
-            return jsonify({
-                'status': 'complete',
-                'score': str(round(((theta[0] - 1.40)/1.50)*15) + 100)
-            })
-
-        next_i = next_item(theta[0], item_db)
-        bs = bs + [next_i["b1"], next_i["b2"], next_i["b3"]]
-        session['item_db'] = item_db
-        session['r'] = r
-        session['bs'] = bs
-        session['theta'] = theta
+        sessions.delete_one({'_id': ObjectId(session_id)})
 
         return jsonify({
-            'status': 'in progress',
-            'code': next_i['code'],
-            'question': next_i['item']
+            'status': 'complete',
+            'score': std_score
         })
+
+    next_i = next_item(theta[0], item_db)
+    bs = bs + [next_i["b1"], next_i["b2"], next_i["b3"]]
+
+    sessions.update_one(
+        {'_id': ObjectId(session_id)},
+        {
+            "$set": {
+                "r": r,
+                "bs": bs,
+                "theta": theta,
+                "item_db": item_db
+            }
+        }
+    )
+
+    return jsonify({
+        'status': 'in progress',
+        'code': next_i['code'],
+        'question': next_i['item'],
+        'session': session_id
+    })
 
 
 if __name__ == '__main__':
