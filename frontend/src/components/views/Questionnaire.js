@@ -3,6 +3,7 @@ import "react-phone-number-input/style.css";
 import { Card, Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { Authentication } from "../../services/authentication";
+import { toast } from "react-toastify";
 
 function Questionarie() {
   const [answer, setAnswer] = useState();
@@ -23,7 +24,10 @@ function Questionarie() {
       .then((res) => {
         const result = res.data;
         if (result.status === "complete") {
-          alert("Your standardized score: " + result.score);
+          // alert("Your standardized score: " + result.score);
+          toast.info("Your standardized score: " + result.score, {
+            position: toast.POSITION.TOP_CENTER,
+          });
           setIsComplete(true);
         }
         setQuestion(result.question);
@@ -57,7 +61,7 @@ function Questionarie() {
           <Col md="8">
             <Card>
               <Card.Header>
-                <Card.Title as="h4">Questionnaire</Card.Title>
+                <Card.Title as="h1">Questionnaire</Card.Title>
               </Card.Header>
 
               <Card.Body>
@@ -68,53 +72,57 @@ function Questionarie() {
                       the following problem?
                     </text>
                     <br />
-                    <text> Q. {question}</text>
+                    <h3> Q. {question}</h3>
                     <div className="radio">
-                      <label>
+                      <h4 className="text-success">
                         <input
                           type="radio"
                           value="0"
                           checked={answer === "0"}
                           onChange={onValueChangeAnswer}
+                          className="m-2"
                         />
                         Not at all
-                      </label>
+                      </h4>
                     </div>
 
                     <div className="radio">
-                      <label>
+                      <h4 className="text-info">
                         <input
                           type="radio"
                           value="1"
                           checked={answer === "1"}
                           onChange={onValueChangeAnswer}
+                          className="m-2"
                         />
                         Several days
-                      </label>
+                      </h4>
                     </div>
 
                     <div className="radio">
-                      <label>
+                      <h4 className="text-warning">
                         <input
                           type="radio"
                           value="2"
                           checked={answer === "2"}
                           onChange={onValueChangeAnswer}
+                          className="m-2"
                         />
                         More than half the days
-                      </label>
+                      </h4>
                     </div>
 
                     <div className="radio">
-                      <label>
+                      <h4 className="text-danger">
                         <input
                           type="radio"
                           value="3"
                           checked={answer === "3"}
                           onChange={onValueChangeAnswer}
+                          className="m-2"
                         />
                         Nearly every day
-                      </label>
+                      </h4>
                     </div>
                   </div>
 

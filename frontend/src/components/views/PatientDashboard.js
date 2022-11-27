@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import { Authentication } from "../../services/authentication";
-import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 function PatientDashboard() {
