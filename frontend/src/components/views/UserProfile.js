@@ -12,43 +12,49 @@ function User() {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
-  const [pin, setPin] = useState("");
-  const [contact, setContact] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [phone, setPhone] = useState("");
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     document.title = "User Profile";
     const userId = Authentication.userId;
-    // const queryParams = {
-    //   userId: userId,
-    // };
-    // const params = new URLSearchParams(queryParams);
-    // axios.get(`http://localhost:8081/getFriendCount/${this.state.UserID}`)
     axios.get(`http://localhost:9000/detail/${userId}`).then((res) => {
       const result = res.data;
       console.log("User details", result);
+      setEmail(result.email);
+      setFirstName(result.firstName);
+      setLastName(result.lastName);
+      setRole(result.role);
+      setAddress(result.address);
+      setCity(result.city);
+      setCountry(result.country);
+      setPostalCode(result.postalCode);
+      setPhone(result.phone);
     });
-    setEmail("abc@mail.com");
-    setFirstName("ABC");
-    setLastName("XYZ");
-    setAddress("123 LMN Road");
-    setCity("San Jose");
-    setCountry("United States");
-    setPin(123456);
-    setContact("9995551235");
   }, []);
 
   const updateUser = (e) => {
     e.preventDefault();
-    console.log(
-      "user updated details: ",
-      firstName,
-      lastName,
-      address,
-      city,
-      country,
-      pin,
-      contact
-    );
+    const userId = Authentication.userId;
+    const requestBody = {
+      id: userId,
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      role: role,
+      address: address,
+      city: city,
+      country: country,
+      postalCode: postalCode,
+      phone: phone,
+    };
+    axios.post("http://localhost:9000/update", requestBody).then((response) => {
+      if (response.status === 200) {
+        const result = response.data;
+        console.log("success", result);
+      }
+    });
   };
 
   return (
@@ -81,7 +87,7 @@ function User() {
                         <label>First Name</label>
                         <Form.Control
                           defaultValue={firstName}
-                          placeholder="Company"
+                          placeholder="First Name"
                           type="text"
                           onChange={(e) => setFirstName(e.target.value)}
                         ></Form.Control>
@@ -136,13 +142,13 @@ function User() {
                       </Form.Group>
                     </Col>
                     <Col className="pl-1" md="4">
-                      <Form.Group controlId="pin">
+                      <Form.Group controlId="postalCode">
                         <label>Postal Code</label>
                         <Form.Control
-                          defaultValue={pin}
+                          defaultValue={postalCode}
                           placeholder="Postal Code"
                           type="number"
-                          onChange={(e) => setPin(e.target.value)}
+                          onChange={(e) => setPostalCode(e.target.value)}
                         ></Form.Control>
                       </Form.Group>
                     </Col>
@@ -151,16 +157,10 @@ function User() {
                     <Col className="pr-1" md="5">
                       {/* <Form.Group controlId="contact"> */}
                       <label>Contact Number</label>
-                      {/* <Form.Control
-                          defaultValue={contact}
-                          placeholder="Contact"
-                          type="text"
-                          onChange={(e) => setContact(e.target.value)}
-                        ></Form.Control> */}
                       <PhoneInput
                         placeholder="Contact Number"
-                        value={contact}
-                        onChange={setContact}
+                        value={phone}
+                        onChange={setPhone}
                       />
                       {/* </Form.Group> */}
                     </Col>

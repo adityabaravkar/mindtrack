@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
-
+import { Authentication } from "../../services/authentication";
 import AdminNavbar from "../Navbars/AdminNavbar";
 import Sidebar from "../Sidebar/Sidebar";
-
 import patientRoutes from "../../patientRoutes.js";
-
 import sidebarImage from "../../assets/img/sidebar-3.jpg";
 
 function Patient() {
+  useEffect(() => {
+    const userId = Authentication.userId;
+    console.log("get: ", userId);
+    if (userId === null) {
+      window.location.replace("/login");
+    }
+  }, []);
+
   const [image] = React.useState(sidebarImage);
   const [color] = React.useState("black");
   const [hasImage] = React.useState(true);

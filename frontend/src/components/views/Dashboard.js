@@ -1,15 +1,41 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
+import { Authentication } from "../../services/authentication";
+import axios from "axios";
 
 function Dashboard() {
-  const initState = [
-    { id: 1, name: "bread", quantitiy: 50, location: "cupboard" },
-    { id: 2, name: "milk", quantitiy: 20, location: "fridge" },
-    { id: 3, name: "water", quantitiy: 10, location: "fridge" },
-  ];
-  const [state, setState] = React.useState(initState);
+  const [myArray, updateMyArray] = useState([]);
 
-  if (initState.length === 0) {
+  useEffect(() => {
+    document.title = "Dashboard";
+    const id = Authentication.userId;
+    axios
+      .get(`http://localhost:9000/myPatients`, {
+        params: {
+          id: id,
+        },
+      })
+      .then((res) => {
+        const result = res.data;
+        console.log(result);
+        updateMyArray(result);
+      });
+  }, []);
+
+  const columns = [
+    {
+      name: "Patient Name",
+      sortable: true,
+      cell: (row) => <div>{row.Pname}</div>,
+    },
+    {
+      name: "Prescription",
+      sortable: true,
+      cell: (row) => <div>{row.Prescription}</div>,
+    },
+  ];
+
+  if (myArray.length === 0) {
     return (
       <div>
         <DataTable className="mt-3" pagination highlightOnHover />
@@ -17,20 +43,7 @@ function Dashboard() {
     );
   } else {
     return (
-      <table className="table">
-        <tr key={"header"}>
-          {Object.keys(state[0]).map((key) => (
-            <th>{key}</th>
-          ))}
-        </tr>
-        {state.map((item) => (
-          <tr key={item.id}>
-            {Object.values(item).map((val) => (
-              <td>{val}</td>
-            ))}
-          </tr>
-        ))}
-      </table>
+      <DataTable columns={columns} pagination data={myArray} highlightOnHover />
     );
   }
 }
