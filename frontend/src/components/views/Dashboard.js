@@ -26,12 +26,10 @@ function Dashboard() {
   const columns = [
     {
       name: "Patient Name",
-      sortable: true,
       cell: (row) => <div>{row.Pname}</div>,
     },
     {
-      name: "Score",
-      sortable: true,
+      name: "Susceptibility Score",
       cell: (row) => <div>{row.Score}</div>,
     },
   ];

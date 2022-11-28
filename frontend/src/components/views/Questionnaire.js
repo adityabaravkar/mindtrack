@@ -25,7 +25,7 @@ function Questionarie() {
       const result = res.data;
       if (result.status === "complete") {
         // alert("Your standardized score: " + result.score);
-        toast.info("Your standardized score: " + result.score, {
+        toast.info("Your Susceptibility score: " + result.score, {
           position: toast.POSITION.TOP_CENTER,
         });
         history.replace("/patient/result");
