@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import { Authentication } from "../../services/authentication";
 import axios from "axios";
+import { config } from "../../config";
 
 function Dashboard() {
   const [myArray, updateMyArray] = useState([]);
@@ -10,7 +11,7 @@ function Dashboard() {
     document.title = "Dashboard";
     const id = Authentication.userId;
     axios
-      .get(`http://localhost:9000/myPatients`, {
+      .get(`${config.backendURL}/myPatients`, {
         params: {
           id: id,
         },

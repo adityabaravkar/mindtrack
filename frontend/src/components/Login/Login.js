@@ -5,6 +5,7 @@ import "../../App.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Authentication } from "../../services";
+import { config } from "../../config";
 
 class Login extends Component {
   constructor(props) {
@@ -55,7 +56,7 @@ class Login extends Component {
       role: this.state.role,
     };
     axios
-      .post("http://localhost:9000/login", requestBody)
+      .post(`${config.backendURL}/login`, requestBody)
       .then((response) => {
         if (response.status === 200) {
           const result = response.data;
