@@ -110,34 +110,14 @@ class Login extends Component {
   };
 
   render() {
-    // let redirectVar = this.state.red;
-    // let userType = localStorage.getItem("accountType");
+    let redirectVar = this.state.red;
 
-    // if (userType === "patient") {
-    //   redirectVar = <Redirect to="/patient" />;
-    // } else if (userType === "therapist") {
-    //   redirectVar = <Redirect to="/therapist" />;
-    // } else {
-    //   redirectVar = "";
-    // }
-    // let remove = null;
-    // if (this.state.status === "") remove = "";
-    // else if (this.state.status === "Success" && userType === "patient") {
-    //   remove = <Redirect to="/patient" />;
-    // } else if (this.state.status === "Error") {
-    //   remove = (
-    //     <div class="alert alert-danger" role="alert">
-    //       User with Name: {this.state.firstName} already present.
-    //     </div>
-    //   );
-    // }
-
-    const userType = localStorage.getItem("accountType");
-
-    if (userType === "patient") {
-      window.location.replace("/patient/dashboard");
-    } else if (userType === "therapist") {
-      window.location.replace("/therapist/dashboard");
+    if (localStorage.getItem("accountType") === "patient") {
+      redirectVar = <Redirect to="/patient/dashboard" />;
+    } else if (localStorage.getItem("accountType") === "therapist") {
+      redirectVar = <Redirect to="/therapist/dashboard" />;
+    } else if (localStorage.getItem("accountType") === undefined) {
+      redirectVar = <Redirect to="/login" />;
     }
 
     return (
@@ -151,8 +131,7 @@ class Login extends Component {
           justifyContent: "center",
         }}
       >
-        {/* {remove}
-        {redirectVar} */}
+        {redirectVar}
         <div class="login-sidebar">
           <div class="sidebar-header mb-5">Welcome to MindTrack</div>
           <form

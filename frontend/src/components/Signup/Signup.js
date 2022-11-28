@@ -106,15 +106,12 @@ class SignUp extends Component {
   render() {
     let redirectVar = this.state.red;
 
-    if (localStorage.getItem("token")) {
-      redirectVar = <Redirect to="/patient" />;
-    } else {
-      redirectVar = "";
-    }
-    let remove = null;
-    if (this.state.status === "") remove = "";
-    else if (this.state.status === "Success") {
-      remove = <Redirect to="/home" />;
+    if (localStorage.getItem("accountType") === "patient") {
+      redirectVar = <Redirect to="/patient/dashboard" />;
+    } else if (localStorage.getItem("accountType") === "therapist") {
+      redirectVar = <Redirect to="/therapist/dashboard" />;
+    } else if (localStorage.getItem("accountType") === undefined) {
+      redirectVar = <Redirect to="/login" />;
     }
     return (
       <div
@@ -127,7 +124,6 @@ class SignUp extends Component {
           justifyContent: "center",
         }}
       >
-        {remove}
         {redirectVar}
         <div class="login-sidebar">
           <div class="sidebar-header mb-5">Welcome to MindTrack</div>
