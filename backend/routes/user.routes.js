@@ -13,5 +13,6 @@ router.get("/detail/:userId", userController.detail);
 router.get("/getDoctors", userController.getDoctors);
 router.get("/myDoctor", connectionsController.myDoctor);
 router.get("/myPatients", connectionsController.myPatients);
+router.post("/connect", connectionsController.connect);
 
 module.exports = router;
