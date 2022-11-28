@@ -1,12 +1,13 @@
 import React from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useHistory } from "react-router-dom";
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
-
 import routes from "../../routes.js";
 import patientRoutes from "../../patientRoutes.js";
 
 function Header() {
   const location = useLocation();
+  const history = useHistory();
+
   const mobileSidebarToggle = (e) => {
     e.preventDefault();
     document.documentElement.classList.toggle("nav-open");
@@ -47,7 +48,7 @@ function Header() {
   const logout = (e) => {
     e.preventDefault();
     window.localStorage.clear();
-    window.location.replace("/login");
+    history.replace("/");
   };
 
   return (
