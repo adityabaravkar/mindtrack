@@ -3,6 +3,7 @@ import DataTable from "react-data-table-component";
 import axios from "axios";
 import { Authentication } from "../../services/authentication";
 import { Link } from "react-router-dom";
+import { config } from "../../config";
 
 function PatientDashboard() {
   const [myArray, updateMyArray] = useState([]);
@@ -10,7 +11,7 @@ function PatientDashboard() {
   useEffect(() => {
     document.title = "Result";
     const userId = Authentication.userId;
-    axios.get(`http://localhost:9000/getResults/${userId}`).then((res) => {
+    axios.get(`${config.backendURL}/getResults/${userId}`).then((res) => {
       const result = res.data;
       updateMyArray(result);
     });

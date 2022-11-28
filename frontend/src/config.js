@@ -1,3 +1,4 @@
-const backendURL = "http://localhost:3001";
+const backendURL = "http://powerful-sierra-68989.herokuapp.com";
+const assessmentURL = "http://vast-taiga-12338.herokuapp.com";
 
-export default backendURL;
+export const config = { backendURL, assessmentURL };

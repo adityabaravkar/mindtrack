@@ -4,6 +4,7 @@ import PhoneInput from "react-phone-number-input";
 import { Button, Card, Form, Container, Row, Col } from "react-bootstrap";
 import { Authentication } from "../../services/authentication";
 import axios from "axios";
+import { config } from "../../config";
 
 function User() {
   const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ function User() {
   useEffect(() => {
     document.title = "User Profile";
     const userId = Authentication.userId;
-    axios.get(`http://localhost:9000/detail/${userId}`).then((res) => {
+    axios.get(`${config.backendURL}/detail/${userId}`).then((res) => {
       const result = res.data;
       console.log("User details", result);
       setEmail(result.email);
@@ -49,7 +50,7 @@ function User() {
       postalCode: postalCode,
       phone: phone,
     };
-    axios.post("http://localhost:9000/update", requestBody).then((response) => {
+    axios.post(`${config.backendURL}/update`, requestBody).then((response) => {
       if (response.status === 200) {
         const result = response.data;
         console.log("success", result);

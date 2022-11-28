@@ -5,13 +5,13 @@ import { Card, Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { Authentication } from "../../services/authentication";
 import { toast } from "react-toastify";
+import { config } from "../../config";
 
 function Questionarie() {
   const [answer, setAnswer] = useState();
   const [question, setQuestion] = useState();
   const [questionCode, setQuestionCode] = useState();
   const [sessionId, setSessionId] = useState();
-  const [isComplete, setIsComplete] = useState();
   const history = useHistory();
 
   const formSubmit = (event) => {
@@ -21,21 +21,19 @@ function Questionarie() {
       response: answer,
       session: sessionId,
     };
-    axios
-      .post(`http://vast-taiga-12338.herokuapp.com/assess`, body)
-      .then((res) => {
-        const result = res.data;
-        if (result.status === "complete") {
-          // alert("Your standardized score: " + result.score);
-          toast.info("Your standardized score: " + result.score, {
-            position: toast.POSITION.TOP_CENTER,
-          });
-          setIsComplete(true);
-          history.replace("/patient/result");
-        }
-        setQuestion(result.question);
-        setQuestionCode(result.code);
-      });
+    axios.post(`${config.assessmentURL}/assess`, body).then((res) => {
+      const result = res.data;
+      if (result.status === "complete") {
+        // alert("Your standardized score: " + result.score);
+        toast.info("Your standardized score: " + result.score, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        history.replace("/patient/result");
+      }
+      setQuestion(result.question);
+      setQuestionCode(result.code);
+      setAnswer();
+    });
   };
 
   const onValueChangeAnswer = (event) => {
@@ -45,9 +43,7 @@ function Questionarie() {
   useEffect(() => {
     document.title = "Questionnaire";
     axios
-      .get(
-        `http://vast-taiga-12338.herokuapp.com/start/${Authentication.userId}`
-      )
+      .get(`${config.assessmentURL}/start/${Authentication.userId}`)
       .then((res) => {
         const result = res.data;
         //console.log("User details", result);
