@@ -36,7 +36,6 @@ function Results() {
   const columns = [
     {
       name: "Name",
-      sortable: true,
       cell: (row) => (
         <div>
           {row.firstName} {row.lastName}
@@ -54,7 +53,6 @@ function Results() {
     {
       name: "Phone",
       cell: (row) => <div>{row.phone}</div>,
-      sortable: true,
     },
     {
       name: "Connect",

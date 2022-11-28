@@ -30,12 +30,11 @@ function PatientDashboard() {
   const columns = [
     {
       name: "Test Date",
-      sortable: true,
-      cell: (row) => <div>{row.dt}</div>,
+      cell: (row) => row.dt,
     },
     {
-      name: "Test Score",
-      cell: (row) => <div>{row.score}</div>,
+      name: "Susceptibility Score",
+      cell: (row) => row.score,
     },
   ];
 
@@ -83,7 +82,7 @@ function PatientDashboard() {
             },
           ]}
           layout={{
-            title: "Test scores to time of test",
+            title: "Susceptibility scores to time of test",
             autosize: false,
             width: 1500,
             height: 600,
