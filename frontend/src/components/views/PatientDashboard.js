@@ -4,18 +4,25 @@ import axios from "axios";
 import { Authentication } from "../../services/authentication";
 import { Link } from "react-router-dom";
 import { config } from "../../config";
+import Plot from "react-plotly.js";
 
 function PatientDashboard() {
   const [myArray, updateMyArray] = useState([]);
+  const [dateArray, updateDateArray] = useState([]);
+  const [scoreArray, updateScoreArray] = useState([]);
+  const [graphView, setGraphview] = useState();
 
   useEffect(() => {
     document.title = "Result";
     const userId = Authentication.userId;
     axios.get(`${config.backendURL}/getResults/${userId}`).then((res) => {
       const result = res.data;
-      // console.log(result);
-      // const dat = result.filter((d) => d.dt);
-      // console.log("dt ", dat);
+      console.log(result);
+      const dat = result.map((a) => a.dt);
+      const score = result.map((a) => a.score);
+      setGraphview(false);
+      updateDateArray(dat);
+      updateScoreArray(score);
       updateMyArray(result);
     });
   }, []);
@@ -32,6 +39,16 @@ function PatientDashboard() {
     },
   ];
 
+  const changeGraph = (e) => {
+    e.preventDefault();
+    setGraphview(true);
+  };
+
+  const changeTable = (e) => {
+    e.preventDefault();
+    setGraphview(false);
+  };
+
   if (myArray.length === 0) {
     return (
       <div>
@@ -43,15 +60,56 @@ function PatientDashboard() {
         </div>
       </div>
     );
-  } else {
+  } else if (graphView === true) {
     return (
       <div>
-        <h1 className="mt-0 mb-3 ">Test Records</h1>
+        <div className="row">
+          <h1 className="col-md-9">Test Records</h1>
+          <button
+            className="btn btn-success col-md-2 float-right"
+            onClick={changeTable}
+          >
+            Table View
+          </button>
+        </div>
+        <Plot
+          className="mt-5"
+          data={[
+            {
+              x: dateArray,
+              y: scoreArray,
+              mode: "lines+markers",
+              type: "scatter",
+            },
+          ]}
+          layout={{
+            title: "Test scores to time of test",
+            autosize: false,
+            width: 1500,
+            height: 600,
+          }}
+        />
+      </div>
+    );
+  } else if (graphView === false) {
+    return (
+      <div>
+        <div className="row">
+          <h1 className="col-md-9">Test Records</h1>
+          <button
+            className="btn btn-success col-md-2 float-right"
+            onClick={changeGraph}
+          >
+            Graph View
+          </button>
+        </div>
+
         <DataTable
           columns={columns}
           pagination
           data={myArray}
           highlightOnHover
+          className="mt-5"
         />
       </div>
     );
