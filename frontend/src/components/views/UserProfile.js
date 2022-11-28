@@ -5,6 +5,7 @@ import { Button, Card, Form, Container, Row, Col } from "react-bootstrap";
 import { Authentication } from "../../services/authentication";
 import axios from "axios";
 import { config } from "../../config";
+import { toast } from "react-toastify";
 
 function User() {
   const [email, setEmail] = useState("");
@@ -55,6 +56,9 @@ function User() {
         const result = response.data;
         console.log("success", result);
       }
+    });
+    toast.success("Updated User details", {
+      position: toast.POSITION.TOP_CENTER,
     });
   };
 

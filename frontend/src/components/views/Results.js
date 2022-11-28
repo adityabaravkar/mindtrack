@@ -100,7 +100,15 @@ function Results() {
     );
   } else {
     return (
-      <DataTable columns={columns} pagination data={myArray} highlightOnHover />
+      <div>
+        <h1 className="mt-0 mb-3 ">List of doctors available to connect</h1>
+        <DataTable
+          columns={columns}
+          pagination
+          data={myArray}
+          highlightOnHover
+        />
+      </div>
     );
   }
 }

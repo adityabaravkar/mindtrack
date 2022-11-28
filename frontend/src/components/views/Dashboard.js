@@ -30,7 +30,7 @@ function Dashboard() {
       cell: (row) => <div>{row.Pname}</div>,
     },
     {
-      name: "Prescription",
+      name: "Score",
       sortable: true,
       cell: (row) => <div>{row.Score}</div>,
     },
@@ -44,7 +44,15 @@ function Dashboard() {
     );
   } else {
     return (
-      <DataTable columns={columns} pagination data={myArray} highlightOnHover />
+      <div>
+        <h1 className="mt-0 mb-3 ">Patient Detials</h1>
+        <DataTable
+          columns={columns}
+          pagination
+          data={myArray}
+          highlightOnHover
+        />
+      </div>
     );
   }
 }

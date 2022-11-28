@@ -13,6 +13,9 @@ function PatientDashboard() {
     const userId = Authentication.userId;
     axios.get(`${config.backendURL}/getResults/${userId}`).then((res) => {
       const result = res.data;
+      // console.log(result);
+      // const dat = result.filter((d) => d.dt);
+      // console.log("dt ", dat);
       updateMyArray(result);
     });
   }, []);
@@ -42,7 +45,15 @@ function PatientDashboard() {
     );
   } else {
     return (
-      <DataTable columns={columns} pagination data={myArray} highlightOnHover />
+      <div>
+        <h1 className="mt-0 mb-3 ">Test Records</h1>
+        <DataTable
+          columns={columns}
+          pagination
+          data={myArray}
+          highlightOnHover
+        />
+      </div>
     );
   }
 }
