@@ -31,7 +31,7 @@ function Dashboard() {
     {
       name: "Prescription",
       sortable: true,
-      cell: (row) => <div>{row.Prescription}</div>,
+      cell: (row) => <div>{row.Score}</div>,
     },
   ];
 

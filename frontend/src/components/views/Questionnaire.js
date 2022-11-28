@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import "react-phone-number-input/style.css";
 import { Card, Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
@@ -11,6 +12,7 @@ function Questionarie() {
   const [questionCode, setQuestionCode] = useState();
   const [sessionId, setSessionId] = useState();
   const [isComplete, setIsComplete] = useState();
+  const history = useHistory();
 
   const formSubmit = (event) => {
     event.preventDefault();
@@ -29,6 +31,7 @@ function Questionarie() {
             position: toast.POSITION.TOP_CENTER,
           });
           setIsComplete(true);
+          history.replace("/patient/result");
         }
         setQuestion(result.question);
         setQuestionCode(result.code);
