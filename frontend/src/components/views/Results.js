@@ -24,7 +24,10 @@ function Results() {
     });
     axios.get(`${config.backendURL}/getResults/${userId}`).then((res) => {
       const result = res.data;
-      updateScore(result[0].score);
+      console.log("res", result.length);
+      if (result.length > 0) {
+        updateScore(result[0].score);
+      }
     });
     axios.get(`${config.backendURL}/detail/${userId}`).then((res) => {
       const result = res.data;
