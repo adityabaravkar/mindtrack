@@ -74,6 +74,7 @@ def estimate_theta(r, b, th):
     delta = conv + 1
     th = float(th[0])
 
+    # maximum likelihood functions undefined for perfect patterns; all 0s or all 1s
     th_max = max(b) + .5
     th_min = min(b) - .5
 
@@ -86,8 +87,12 @@ def estimate_theta(r, b, th):
             sumnum = 0.0
             sumdem = 0.0
             for j in range(J):
+                # phat = ratio of the number of successes in a sample to the size of that sample
+                # estimated probability of getting a correct response
                 phat = 1 / (1.0 + math.exp(-1 * (th - b[j])))
+
                 sumnum = sumnum + 1.0 * (r[j] - phat)
+                # Summing all item information functions
                 sumdem = sumdem - 1.0 * phat * (1.0 - phat)
             delta = sumnum / sumdem
             th = th - delta
