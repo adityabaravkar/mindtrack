@@ -7,3 +7,9 @@ We have three main components -> Frontend,Backend and machine learning model, al
 - Backend.   -  https://github.com/ShreshtaBalmuri/MentalHealth_Application/tree/main/backend
 - FrontEnd.  -  https://github.com/ShreshtaBalmuri/MentalHealth_Application/tree/main/frontend
 - Assessment module  -  https://github.com/ShreshtaBalmuri/MentalHealth_Application/tree/main/assessment
+
+## Steps to run locally:
+
+- Clone the repository: git clone https://github.com/ShreshtaBalmuri/MentalHealth_Application
+- Setup Backend Services:
+	
