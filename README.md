@@ -1,10 +1,6 @@
 # MindTrack
 
-## Modules
-
-- Backend
-- FrontEnd
-- Assessment
+In this project, we've developed a special kind of assessment that estimates the susceptibility of the user to depression using item response theory's graded response model applied to the reliable PHQ9 questionnaire. Unlike classical tests where the score is calculated for the enitre set of questions this time est estimates the score after each response to a question and based on all the previous responses the next question is presented.
 
 ## Steps to run locally:
 
