@@ -11,6 +11,9 @@ flask-pymongo = "*"
 python-dotenv = "*"
 flask-session = "*"
 gunicorn = "*"
+marshmallow = "*"
+flask-jwt-extended = "*"
+werkzeug = "*"
 
 [dev-packages]
 

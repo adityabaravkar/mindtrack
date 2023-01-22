@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
-import axios from "axios";
+import { jwtApiCall } from "../../config";
 import { toast } from "react-toastify";
 import { Authentication } from "../../services/authentication";
 import { useHistory } from "react-router-dom";
@@ -16,20 +16,18 @@ function Results() {
 
   useEffect(() => {
     document.title = "Result";
-    const userId = Authentication.userId;
-    setUserId(userId);
-    axios.get(`${config.backendURL}/getDoctors`).then((res) => {
+    setUserId(Authentication.userId);
+    jwtApiCall.get(`/getDoctors`).then((res) => {
       const result = res.data;
       updateMyArray(result);
     });
-    axios.get(`${config.backendURL}/getResults/${userId}`).then((res) => {
+    jwtApiCall.get(`/getResults`).then((res) => {
       const result = res.data;
-      console.log("res", result.length);
       if (result.length > 0) {
         updateScore(result[0].score);
       }
     });
-    axios.get(`${config.backendURL}/detail/${userId}`).then((res) => {
+    jwtApiCall.get(`/detail`).then((res) => {
       const result = res.data;
       setFirstName(result.firstName);
       setLastName(result.lastName);
@@ -81,7 +79,7 @@ function Results() {
       pname: firstName + " " + lastName,
       score: score,
     };
-    axios.post(`${config.backendURL}/connect`, requestBody).then((response) => {
+    jwtApiCall.post(`/connect`, requestBody).then((response) => {
       if (response.status === 200) {
         const result = response.data;
         console.log("success", result);

@@ -5,4 +5,6 @@ load_dotenv(find_dotenv())
 
 MONGO_URI = environ.get('MONGO_URI')
 PORT = environ.get('PORT')
-SECRET_KEY = environ.get('SECRET_KEY')
+JWT_SECRET_KEY = environ.get('JWT_SECRET_KEY')
+SEM_THETA = environ.get('SEM_THETA')
+MAX_ITEMS = environ.get('MAX_ITEMS')

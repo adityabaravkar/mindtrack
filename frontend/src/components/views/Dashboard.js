@@ -1,36 +1,26 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
-import { Authentication } from "../../services/authentication";
-import axios from "axios";
-import { config } from "../../config";
+import { jwtApiCall } from "../../config";
 
 function Dashboard() {
   const [myArray, updateMyArray] = useState([]);
 
   useEffect(() => {
     document.title = "Dashboard";
-    const id = Authentication.userId;
-    axios
-      .get(`${config.backendURL}/myPatients`, {
-        params: {
-          id: id,
-        },
-      })
-      .then((res) => {
-        const result = res.data;
-        console.log(result);
-        updateMyArray(result);
-      });
+    jwtApiCall.get(`/myPatients`).then((res) => {
+      const result = res.data;
+      updateMyArray(result);
+    });
   }, []);
 
   const columns = [
     {
       name: "Patient Name",
-      cell: (row) => <div>{row.Pname}</div>,
+      cell: (row) => <div>{row.pname}</div>,
     },
     {
       name: "Susceptibility Score",
-      cell: (row) => <div>{row.Score}</div>,
+      cell: (row) => <div>{row.score}</div>,
     },
   ];
 
