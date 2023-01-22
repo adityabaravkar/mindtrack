@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
-import axios from "axios";
-import { Authentication } from "../../services/authentication";
+import { jwtApiCall } from "../../config";
 import { Link } from "react-router-dom";
-import { config } from "../../config";
 import Plot from "react-plotly.js";
 
 function PatientDashboard() {
@@ -14,10 +12,8 @@ function PatientDashboard() {
 
   useEffect(() => {
     document.title = "Result";
-    const userId = Authentication.userId;
-    axios.get(`${config.backendURL}/getResults/${userId}`).then((res) => {
+    jwtApiCall.get(`/getResults`).then((res) => {
       const result = res.data;
-      console.log(result);
       const dat = result.map((a) => a.dt);
       const score = result.map((a) => a.score);
       setGraphview(false);

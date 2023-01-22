@@ -3,8 +3,7 @@ import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { Button, Card, Form, Container, Row, Col } from "react-bootstrap";
 import { Authentication } from "../../services/authentication";
-import axios from "axios";
-import { config } from "../../config";
+import { jwtApiCall } from "../../config";
 import { toast } from "react-toastify";
 
 function User() {
@@ -20,8 +19,7 @@ function User() {
 
   useEffect(() => {
     document.title = "User Profile";
-    const userId = Authentication.userId;
-    axios.get(`${config.backendURL}/detail/${userId}`).then((res) => {
+    jwtApiCall.get(`/detail`).then((res) => {
       const result = res.data;
       console.log("User details", result);
       setEmail(result.email);
@@ -41,7 +39,6 @@ function User() {
     const userId = Authentication.userId;
     const requestBody = {
       id: userId,
-      email: email,
       firstName: firstName,
       lastName: lastName,
       role: role,
@@ -51,7 +48,7 @@ function User() {
       postalCode: postalCode,
       phone: phone,
     };
-    axios.post(`${config.backendURL}/update`, requestBody).then((response) => {
+    jwtApiCall.post(`/update`, requestBody).then((response) => {
       if (response.status === 200) {
         const result = response.data;
         console.log("success", result);

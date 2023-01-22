@@ -1,4 +1,8 @@
-const backendURL = "http://powerful-sierra-68989.herokuapp.com";
-const assessmentURL = "http://vast-taiga-12338.herokuapp.com";
+import axios from "axios";
+import { Authentication } from "./services";
 
-export const config = { backendURL, assessmentURL };
+export const jwtApiCall = axios.create({
+  baseURL: "http://vast-taiga-12338.herokuapp.com",
+  timeout: 1000,
+  headers: { Authorization: Authentication.bearerToken },
+});

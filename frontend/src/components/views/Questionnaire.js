@@ -2,36 +2,30 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import "react-phone-number-input/style.css";
 import { Card, Container, Row, Col } from "react-bootstrap";
-import axios from "axios";
-import { Authentication } from "../../services/authentication";
+import { jwtApiCall } from "../../config";
 import { toast } from "react-toastify";
-import { config } from "../../config";
 
 function Questionarie() {
   const [answer, setAnswer] = useState();
   const [question, setQuestion] = useState();
-  const [questionCode, setQuestionCode] = useState();
   const [sessionId, setSessionId] = useState();
   const history = useHistory();
 
   const formSubmit = (event) => {
     event.preventDefault();
     const body = {
-      code: questionCode,
       response: answer,
       session: sessionId,
     };
-    axios.post(`${config.assessmentURL}/assess`, body).then((res) => {
+    jwtApiCall.post(`/assess`, body).then((res) => {
       const result = res.data;
       if (result.status === "complete") {
-        // alert("Your standardized score: " + result.score);
         toast.info("Your Susceptibility score: " + result.score, {
           position: toast.POSITION.TOP_CENTER,
         });
         history.replace("/patient/result");
       }
       setQuestion(result.question);
-      setQuestionCode(result.code);
       setAnswer();
     });
   };
@@ -42,15 +36,11 @@ function Questionarie() {
 
   useEffect(() => {
     document.title = "Questionnaire";
-    axios
-      .get(`${config.assessmentURL}/start/${Authentication.userId}`)
-      .then((res) => {
-        const result = res.data;
-        //console.log("User details", result);
-        setQuestion(result.question);
-        setQuestionCode(result.code);
-        setSessionId(result.session);
-      });
+    jwtApiCall.get(`/start`).then((res) => {
+      const result = res.data;
+      setQuestion(result.question);
+      setSessionId(result.session);
+    });
   }, []);
 
   return (

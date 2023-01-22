@@ -1,18 +1,10 @@
 # MindTrack
 
-## Project Source Code:
-
-- https://github.com/ShreshtaBalmuri/MentalHealth_Application
-
-We have three main components -> Frontend,Backend and machine learning model, all are are deployed on cloud.
-
-- Backend. - https://github.com/ShreshtaBalmuri/MentalHealth_Application/tree/main/backend
-- FrontEnd. - https://github.com/ShreshtaBalmuri/MentalHealth_Application/tree/main/frontend
-- Assessment module - https://github.com/ShreshtaBalmuri/MentalHealth_Application/tree/main/assessment
+In this project, we've developed a special kind of assessment that estimates the susceptibility of the user to depression using item response theory's graded response model applied to the reliable PHQ9 questionnaire. Unlike classical tests where the score is calculated for the enitre set of questions this time est estimates the score after each response to a question and based on all the previous responses the next question is presented.
 
 ## Steps to run locally:
 
-- Clone the repository: git clone https://github.com/ShreshtaBalmuri/MentalHealth_Application
+- Clone the repository
 - Setup backend services:
   - Go to the backend directory.
   - Run "npm install".
