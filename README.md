@@ -5,17 +5,12 @@ In this project, we've developed a special kind of assessment that estimates the
 ## Steps to run locally:
 
 - Clone the repository
-- Setup backend services:
+- Setup backend directory:
   - Go to the backend directory.
-  - Run "npm install".
-  - Create .env file with APP_SECRET, MONGOURI, and PORT.
-  - Run "node" to start the backend app on given port.
-- Setup assessment services:
-  - Go to the assessment directory.
   - Run "pipenv install -r requirements.txt".
-  - Create .env file with MONGOURI and PORT.
+  - Create .env file with MONGOURI, PORT, JWT_SECRET_KEY, STD_ERROR_MIN and MAX_ITEMS.
   - Run "pipenv shell"
-  - Run "python assess.py" to start the assessment app on given port.
+  - Run "python main.py" to start the assessment app on given port.
 - Setup frontend app:
   - Go to the frontend directory.
   - Run "npm install".
